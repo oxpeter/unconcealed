@@ -27,7 +27,7 @@ you may want to manually install them ahead of time to
 configure them according to your other needs.
 * opencv
 * Pillow
-* Pdf2Image (only if you need to use the image extraction feature)
+* pdfimages (only if you need to use the image extraction feature)
 * Jupyter, Ipywidgets (if you want to use the interactive widget module)
 * numpy, pandas
 
@@ -49,10 +49,15 @@ this from the [IPython documentation](https://ipython.readthedocs.io/en/stable/i
     1. If you need to, you can use unconcealed.extract_from_pdf() to create a directory containing all images from a PDF, with the ability to filter based on image size.
 3. Import the widget module:
 
-```{python} {from unconcealed import widgets}```
+```python 
+from unconcealed import widgets
+```
+
 4. Prepare and load the widget:
 
-```{python} {load_evaluation_widget(IMAGE_DIRECTORY)}```
+```python 
+load_evaluation_widget(IMAGE_DIRECTORY)
+```
 
 5. Navigate through the tabs to perform various transformations of the selected image. 
 6. Use the first tab to change directory, and select which image to analyze.
