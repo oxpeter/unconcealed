@@ -145,10 +145,11 @@ def widget_find_discontinuities(ksize=(3, 13), edge_thresholds=(15, 100), min_le
                          target_savedir=target_savedir)
 
 def widget_map_color(cmap, ):
+    "Displays greyscale image and an LUT-converted image"
     if target_grey.shape[0] / target_grey.shape[1] < 1:
-        tools.display_two_plots_v(target_grey, tools.apply_cmap(target_grey, cmap=cmap))
+        tools.display_two_plots_v(target_grey, tools.apply_cmap(target_grey, cmap=cmap), figsize=(16,32))
     else:
-        tools.display_two_plots(target_grey, tools.apply_cmap(target_grey, cmap=cmap))
+        tools.display_two_plots(target_grey, tools.apply_cmap(target_grey, cmap=cmap), figsize=(32, 16))
 
 def widget_contour_similarity(target_fn=None, figsize=(30, 60), nrows=30, ncols=10, equalize=True,
                               cmap=mplcm.gist_ncar):

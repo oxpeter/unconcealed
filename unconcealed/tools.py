@@ -152,7 +152,7 @@ def calculate_noise(img, gaussian_k=5, median_k=5, bilateral_k=9, bilateral_r=25
 
     if show:
         fig = plt.figure(figsize=figsize)
-        plt.subplot(511), plt.imshow(img), plt.title('Original')
+        plt.subplot(511), plt.imshow(img, cmap='gray'), plt.title('Original')
         plt.subplot(512), plt.imshow(img - dst_filter2d), plt.title('dst_filter2d')
         plt.subplot(513), plt.imshow(img - dst_bilateral), plt.title('dst_bilateral')
         plt.subplot(514), plt.imshow(img - dst_median), plt.title('dst_median')
@@ -401,6 +401,7 @@ def apply_contrast(image, contrast, brightness):
 
 
 def display_two_plots(im1, im2, figsize=(32, 16)):
+    "Display two images horizontally"
     fig = plt.figure(figsize=figsize)
     plt.subplot(121)
     plt.imshow(im1, interpolation='nearest', )
@@ -410,6 +411,7 @@ def display_two_plots(im1, im2, figsize=(32, 16)):
 
 
 def display_two_plots_v(im1, im2, figsize=(16, 32)):
+    "Display two images vertically stacked"
     fig = plt.figure(figsize=figsize)
     plt.subplot(211)
     plt.imshow(im1, interpolation='nearest', )
