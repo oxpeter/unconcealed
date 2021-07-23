@@ -10,6 +10,9 @@ The primary feature of Unconcealed is a Jupyter widget that
 lets you select images, apply a mask, then access various
 transformation and visualization tools via tabs. 
 
+![Widget mask display](./img/demo1-mask.png)
+![Widget noise display](./img/demo1-noise.png)
+
 The widget also displays a record of all parameters used 
 during an evaluation, allowing for reproducibility of the
 work.
@@ -18,18 +21,9 @@ A specific feature captures and compares contours of image
 elements (eg Western Blot bands), revealing similarities 
 that may be the result of image duplication.
 
-## Installation
+![Widget band similarity output](./img/demo1-similarity.png)
 
-### Dependencies 
-Here are the other applications that Unconcealed uses to do 
-its work. Most of these will be installed automatically, but 
-you may want to manually install them ahead of time to 
-configure them according to your other needs.
-* opencv
-* Pillow
-* pdfimages (only if you need to use the image extraction feature)
-* Jupyter, Ipywidgets (if you want to use the interactive widget module)
-* numpy, pandas
+## Installation
 
 ### Getting started
 The basic installation will need you to open your terminal and 
@@ -42,11 +36,17 @@ make sure that you install unconcealed into an environment
 accessible as a Jupyter kernel. You can read more about 
 this from the [IPython documentation](https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments).
 
+### Dependencies 
+To use the full functionality of unconcealed, you will need to 
+separately install the following dependencies. 
+
+* pdfimages (only if you need to use the image extraction feature)
+* Jupyter, Ipywidgets (if you want to use the interactive widget module)
 
 ## Usage
 1. Start up your Jupyter notebook
 2. Note the directory/s where the images are located
-    1. If you need to, you can use unconcealed.extract_from_pdf() to create a directory containing all images from a PDF, with the ability to filter based on image size.
+    1. If you need to, you can use unconcealed.extract_from_pdf() to create a directory containing all images from a PDF, with the ability to filter based on image size. This requires separate installation of pdfimages.
 3. Import the widget module:
 
 ```python 
