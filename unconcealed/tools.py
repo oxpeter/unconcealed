@@ -562,10 +562,10 @@ def get_similar_bands(contours, target_savedir, target_image, colored=False):
         return None, None, None, None
 
     # create array of contour shapes
-    df_matchDist = pd.DataFrame([[cv2.matchShapes(c1, c2, 1, 0.0) for c1 in contours] for c2 in contours])
+    df_matchDist = pd.DataFrame([[ cv2.matchShapes(c1, c2, 1, 0.0) for c1 in contours] for c2 in contours])
 
     # plot clustermap of distances between contours
-    g = sns.clustermap(data=df_matchDist)
+    g = sns.clustermap(data=np.log2(df_matchDist+0.00001))
     plt.savefig("{}/band_clusters.png".format(target_savedir))
     plt.show()
 
@@ -606,7 +606,7 @@ def get_similar_bands(contours, target_savedir, target_image, colored=False):
     return df_matchDist, Z, band_images, sorted_idx
 
 
-def plot_colored_bands(sorted_idx, band_images, target_savedir, figsize=(30, 60), nrows=30, ncols=10,
+def plot_colored_bands(sorted_idx, band_images, target_savedir, figsize=(30, 60), nrows=0, ncols=0,
                        equalize=True, cmap=mplcm.gist_ncar):
     """
     plot ordered set of band images
@@ -616,8 +616,18 @@ def plot_colored_bands(sorted_idx, band_images, target_savedir, figsize=(30, 60)
     target_savedir: directory to save figure. Set to None if you don't
                     want to save image.
     """
-    # filter list to keep only indicies present in band_images:
+    # filter list to keep only indices present in band_images:
     idx_filtered = [i for i in sorted_idx if i in band_images]
+
+    # optimize ncol and nrow for size of idx_filtered
+    if ncols == 0 or nrows == 0:
+        sqrt = np.sqrt(len(idx_filtered))
+        if sqrt <= 10:
+            nrows = int(np.ceil(sqrt))
+            ncols = int(np.ceil(sqrt))
+        else:
+            ncols = 10
+            nrows = np.ceil(len(idx_filtered)/10)
 
     # plot figure
     fig = plt.figure(figsize=figsize)

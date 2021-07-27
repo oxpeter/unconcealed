@@ -151,7 +151,7 @@ def widget_map_color(cmap, ):
     else:
         tools.display_two_plots(target_grey, tools.apply_cmap(target_grey, cmap=cmap), figsize=(32, 16))
 
-def widget_contour_similarity(target_fn=None, figsize=(30, 60), nrows=30, ncols=10, equalize=True,
+def widget_contour_similarity(target_fn=None, figsize=(30, 60), nrows=0, ncols=0, equalize=True,
                               cmap=mplcm.gist_ncar):
     target_savedir = tools.get_savedir(target_fn)
     df_matchDist, Z, band_images, sorted_idx = tools.get_similar_bands(filtered_contours,
@@ -297,9 +297,9 @@ def load_evaluation_widget(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
 
     wbandfigsize = widgets.IntRangeSlider(value=[30, 30], min=5, max=120, step=1, description='Figsize (w,h):',
                                           continuous_update=False, layout=items_layout)
-    wbandnrows = widgets.IntSlider(value=30, min=1, max=40, step=1, description='Num. rows:', continuous_update=False,
+    wbandnrows = widgets.IntSlider(value=0, min=0, max=40, step=1, description='Num. rows:', continuous_update=False,
                                    layout=items_layout)
-    wbandncols = widgets.IntSlider(value=10, min=1, max=40, step=1, description='Num. cols:', continuous_update=False,
+    wbandncols = widgets.IntSlider(value=0, min=0, max=40, step=1, description='Num. cols:', continuous_update=False,
                                    layout=items_layout)
     wequalize = widgets.Checkbox(value=True, description="Equalize bands", layout=items_layout)
 
