@@ -69,8 +69,8 @@ def create_logger():
 
 
 def set_binary_thresholds(target_fn, cropx=None, cropy=None, thresholds=(100, 255), invert=False, gamma=1.0,
-                          brightness=0, contrast=0,
-                          clahe=False, figwidth=32, figheight=16, displayplot=True):
+                          brightness=0, contrast=0, clahe=False, clahe_window=50,
+                          figwidth=32, figheight=16, displayplot=True):
     # set global variables to be available to the widgets:
     global original_shape
     global target_binary
@@ -94,7 +94,7 @@ def set_binary_thresholds(target_fn, cropx=None, cropy=None, thresholds=(100, 25
 
     # apply contrast limited adaptive histogram equalization (CLAHE)
     if clahe:
-        clahe_model = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        clahe_model = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(clahe_window, clahe_window))
         target_grey = clahe_model.apply(target_grey)
 
     # apply brightness/contrast
@@ -231,6 +231,7 @@ def load_binary_widgets(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
 
     winvert = widgets.Checkbox(value=False, description="Invert image", layout=items_layout)
     wclahe = widgets.Checkbox(value=False, description="CLAH equalization:", layout=items_layout)
+    wclahewin = widgets.IntSlider(value=50, min=1, max=200, step=1, description='CLAHE window:', layout=items_layout)
     wbrange = widgets.IntRangeSlider(value=[100, 255], min=0, max=255, step=1, description='Thresholds:',
                                      layout=items_layout)
     wgamma = widgets.FloatSlider(value=0.8, min=0, max=2.0, step=0.05, description="Gamma:", layout=items_layout)
@@ -239,7 +240,7 @@ def load_binary_widgets(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
     wfigwidth = widgets.IntSlider(value=32, min=1, max=32, step=1, description='Fig width:', layout=items_layout)
     wfigheight = widgets.IntSlider(value=16, min=1, max=48, step=1, description='Fig height:', layout=items_layout)
 
-    return wdirectory, wfilepath, wcropx, wcropy, winvert, wclahe, wbrange, wgamma, wbright, wcontrast, wfigwidth, wfigheight
+    return wdirectory, wfilepath, wcropx, wcropy, winvert, wclahe, wclahewin, wbrange, wgamma, wbright, wcontrast, wfigwidth, wfigheight
 
 def load_evaluation_widget(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
     """
@@ -260,7 +261,7 @@ def load_evaluation_widget(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
     items_layout = Layout(width='auto')
 
     # define all widgets for binary thresholding and output figsize
-    wdirectory, wfilepath, wcropx, wcropy, winvert, wclahe, wbrange, wgamma, wbright, wcontrast, wfigwidth, wfigheight = load_binary_widgets(
+    wdirectory, wfilepath, wcropx, wcropy, winvert, wclahe, wclahewin, wbrange, wgamma, wbright, wcontrast, wfigwidth, wfigheight = load_binary_widgets(
         DIRECTORY, ext_list)
 
     # set widgets for contour extraction
@@ -323,14 +324,14 @@ def load_evaluation_widget(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
                                          layout=items_layout)
 
     # set reporting of widget values
-    widgetlist = [wdirectory, wfilepath, wcropx, wcropy, winvert, wclahe, wbrange, wgamma, wbright, wcontrast,
+    widgetlist = [wdirectory, wfilepath, wcropx, wcropy, winvert, wclahe, wclahewin, wbrange, wgamma, wbright, wcontrast,
                   wfigwidth, wfigheight, warange, wratio, wminwidth, wksize, wedgethresholds, wminedgelen, wcmaps,
                   wsavecmap,
                   wbandfigsize, wbandnrows, wbandncols, wequalize, wgaussian, wmedian, wbilateralk, wbilateralr,
                   wnfigwidth, wnfigheight,
                   ]
-    widgetnames = ["wdirectory", "wfilepath", "wcropx", "wcropy", "winvert", "wclahe", "wbrange", "wgamma", "wbright",
-                   "wcontrast",
+    widgetnames = ["wdirectory", "wfilepath", "wcropx", "wcropy", "winvert", "wclahe", "wclahewin", "wbrange", "wgamma",
+                   "wbright", "wcontrast",
                    "wfigwidth", "wfigheight", "warange", "wratio", "wminwidth", "wksize", "wedgethresholds",
                    "wminedgelen", "wcmaps",
                    "wsavecmap",
@@ -395,6 +396,7 @@ def load_evaluation_widget(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
                                                                 'brightness': wbright,
                                                                 'contrast': wcontrast,
                                                                 'clahe': wclahe,
+                                                                'clahe_window':wclahewin,
                                                                 'figwidth': wfigwidth,
                                                                 'figheight': wfigheight
                                                                 })
@@ -454,7 +456,7 @@ def load_evaluation_widget(DIRECTORY, ext_list=DEFAULT_EXTENSIONS):
 
     binarytab = widgets.VBox([widgets.VBox([wdirectory, wfilepath, wcropx, wcropy,
                                             widgets.HBox([winvert, wclahe], ),
-                                            wbrange, wgamma, wbright, wcontrast, wfigwidth,
+                                            wclahewin, wbrange, wgamma, wbright, wcontrast, wfigwidth,
                                             wfigheight],
                                            layout=box_layout), outbin],
                              layout=Layout(border='solid', margin='3'))
